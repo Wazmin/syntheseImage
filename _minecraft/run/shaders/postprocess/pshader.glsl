@@ -19,48 +19,59 @@ void main (void)
 	vec4 color = texture2D( Texture0 , vec2( gl_TexCoord[0] ) );
 	float depth = texture2D( Texture1 , vec2( gl_TexCoord[0] ) ).r;
 
-
-	// pour effet de bordures noires
-	float dVoisinHaut = texture2D( Texture1 , vec2(gl_TexCoord[0].x , gl_TexCoord[0].y + 1*ystep ) ).r;
-	float dVoisinBas = texture2D( Texture1 , vec2(gl_TexCoord[0].x , gl_TexCoord[0].y - 1*ystep ) ).r;
-	float dVoisinGauche = texture2D( Texture1 , vec2(gl_TexCoord[0].x +1*xstep , gl_TexCoord[0].y ) ).r;
-	float dVoisinDroite = texture2D( Texture1 , vec2(gl_TexCoord[0].x -1*xstep, gl_TexCoord[0].y ) ).r;	
+	float voisins[8];
+	float indiceDiff = LinearizeDepth(depth);
+	indiceDiff *= 8;
+	voisins[0] = texture2D( Texture1 , vec2(gl_TexCoord[0].x - 1*xstep , gl_TexCoord[0].y - 1*ystep ) ).r;
+	voisins[1] = texture2D( Texture1 , vec2(gl_TexCoord[0].x - 0*xstep , gl_TexCoord[0].y - 1*ystep ) ).r;
+	voisins[2] = texture2D( Texture1 , vec2(gl_TexCoord[0].x + 1*xstep , gl_TexCoord[0].y - 1*ystep ) ).r;
+	voisins[3] = texture2D( Texture1 , vec2(gl_TexCoord[0].x - 1*xstep , gl_TexCoord[0].y - 0*ystep ) ).r;
+	voisins[4] = texture2D( Texture1 , vec2(gl_TexCoord[0].x + 1*xstep , gl_TexCoord[0].y - 0*ystep ) ).r;
+	voisins[5] = texture2D( Texture1 , vec2(gl_TexCoord[0].x - 1*xstep , gl_TexCoord[0].y + 1*ystep ) ).r;	
+	voisins[6] = texture2D( Texture1 , vec2(gl_TexCoord[0].x - 0*xstep , gl_TexCoord[0].y + 1*ystep ) ).r;
+	voisins[7] = texture2D( Texture1 , vec2(gl_TexCoord[0].x + 1*xstep , gl_TexCoord[0].y + 1*ystep ) ).r;	
 	
-	//Permet de scaler la profondeur
-	depth = LinearizeDepth(depth);
-	dVoisinHaut = LinearizeDepth(dVoisinHaut);
-	dVoisinBas =  LinearizeDepth(dVoisinBas);
-	dVoisinGauche =  LinearizeDepth(dVoisinGauche);
-	dVoisinDroite =  LinearizeDepth(dVoisinDroite);
-
-	float indiceDif = 4* depth - (dVoisinHaut +dVoisinBas+ dVoisinGauche+dVoisinDroite);
-
-	if(indiceDif > 0.0001 && color.b<0.5f){
-	color.r =0.0f ;
-	color.g =0.0f;
-	color.b =0.0f ;
-	color.a =1.0f;
-	}else{
-		color = texture2D( Texture0 , vec2( gl_TexCoord[0].x , gl_TexCoord[0].y + 1*ystep ) ) +texture2D( Texture0 , vec2( gl_TexCoord[0].x , gl_TexCoord[0].y - 1*ystep ))+
-		texture2D( Texture0 , vec2( gl_TexCoord[0].x +1*xstep , gl_TexCoord[0].y  ))+texture2D( Texture0 , vec2( gl_TexCoord[0].x -1*xstep, gl_TexCoord[0].y ));
-		color /= 4.0f;
-		color.a = 1.0f;
+	for (int i=0;i<8;i++){
+		voisins[i] = LinearizeDepth(voisins[i]);
+		indiceDiff -= voisins[i];
 	}
+
+	float deltaDiff = 0.0001;
+
+	if(color.b >= 0.28f && color.r <= 0.8f ){
+		deltaDiff = 0.01;
+	}
+
+	if(abs(indiceDiff) > deltaDiff){
+		if(color.b >= 0.28f && color.r <= 0.8f){
+			color.r =0.7f ;
+			color.g =0.7f;
+			color.b =0.9f ;
+			color.a =1.0f;		
+		}
+		else{
+			color.r =0.0f ;
+			color.g =0.0f;
+			color.b =0.0f ;
+			color.a =1.0f;
+		}
+	}
+
 
 
 /*
 *	Effet de brouillard
 *
 */
-//	float d = 1/ (depth * 40);
-//
-//	if(depth > 0.04){
-//		float f = (color.b + color.r + color.g)/3.0f;
-//		color.r = color.r /d ;
-//		color.g = color.g/d ;
-//		color.b = color.b/d;
-//		color.a =d;
-//	}
+	// float d = (LinearizeDepth(depth) ) ;
+
+	// if(d > 0.04 ){
+		// float f = (color.b + color.r + color.g)/3.0f;
+		// color.r = color.r  ;
+		// color.g = color.g ;
+		// color.b = color.b;
+		// color.a =d;
+	// }
 
 
 

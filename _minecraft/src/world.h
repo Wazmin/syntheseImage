@@ -9,6 +9,11 @@
 #include "my_physics.h"
 #include <time.h>  
 #include <math.h> 
+
+#include "engine/render/graph/tex_manager.h"
+
+
+
 typedef uint8 NYAxis;
 #define NY_AXIS_X 0x01
 #define NY_AXIS_Y 0x02
@@ -30,8 +35,9 @@ public :
 	GLfloat mShininess = 100;
 	int altitudeNeige = 0.85f* MAT_HEIGHT_CUBES;
 	int altitudeEau = 0.3f *MAT_HEIGHT_CUBES;
-	float indiceNuageux = 0.01;
-		
+	float indiceNuageux = 50;
+	NYTexFile * _TexGrass;
+	
 	struct Point2D {
 		int x;
 		int y;
@@ -236,7 +242,6 @@ public :
 	NYWorld()
 	{
 		_FacteurGeneration = .50;
-
 		//On crée les chunks
 		for(int x=0;x<MAT_SIZE;x++)
 			for(int y=0;y<MAT_SIZE;y++)
@@ -271,6 +276,7 @@ public :
 					_Chunks[x][y][z]->setVoisins(cxPrev,cxNext,cyPrev,cyNext,czPrev,czNext);
 				}
 
+		//_TexGrass = NYTexManager::getInstance()->loadTexture(std::string("_minecraft/run/grass.png"));
 					
 	}
 
@@ -355,7 +361,7 @@ public :
 				getCube(x, y, tmpHeight)->_Type = CUBE_AIR;
 			}
 
-			if (getRand(0, 10) / 10.0f < indiceNuageux) {
+			if (getRand(0, 1000)  < indiceNuageux) {
 				getCube(x, y, tmpHeight)->_Type = CUBE_NEIGE;
 			}
 			else {
@@ -804,15 +810,23 @@ public :
 	}
 
 
+
+
 	void render_world_vbo(void)
 	{
-		for(int x=0;x<MAT_SIZE;x++)
-			for(int y=0;y<MAT_SIZE;y++)
-				for(int z=0;z<MAT_HEIGHT;z++)
+	
+		
+		/*glEnable(GL_TEXTURE_2D);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, _TexGrass->Texture);*/
+
+		for (int x = 0;x<MAT_SIZE;x++)
+			for (int y = 0;y<MAT_SIZE;y++)
+				for (int z = 0;z<MAT_HEIGHT;z++)
 				{
 					glPushMatrix();
-					glTranslatef((float)(x*NYChunk::CHUNK_SIZE*NYCube::CUBE_SIZE),(float)(y*NYChunk::CHUNK_SIZE*NYCube::CUBE_SIZE),(float)(z*NYChunk::CHUNK_SIZE*NYCube::CUBE_SIZE));
-					_Chunks[x][y][z]->render();	
+					glTranslatef((float)(x*NYChunk::CHUNK_SIZE*NYCube::CUBE_SIZE), (float)(y*NYChunk::CHUNK_SIZE*NYCube::CUBE_SIZE), (float)(z*NYChunk::CHUNK_SIZE*NYCube::CUBE_SIZE));
+					_Chunks[x][y][z]->render();
 					glPopMatrix();
 				}
 

@@ -10,9 +10,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		src\chunk.cpp = src\chunk.cpp
 		src\chunk.h = src\chunk.h
 		src\cube.h = src\cube.h
+		run\grass.png = run\grass.png
 		run\shaders\psbase.glsl = run\shaders\psbase.glsl
 		run\shaders\postprocess\pshader.glsl = run\shaders\postprocess\pshader.glsl
 		run\shaders\pshader.glsl = run\shaders\pshader.glsl
+		..\_engine\src\engine\render\graph\tex_manager.cpp = ..\_engine\src\engine\render\graph\tex_manager.cpp
+		..\_engine\src\engine\render\graph\tex_manager.h = ..\_engine\src\engine\render\graph\tex_manager.h
 		run\shaders\vsbase.glsl = run\shaders\vsbase.glsl
 		src\world.h = src\world.h
 	EndProjectSection

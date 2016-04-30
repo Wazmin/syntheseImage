@@ -54,11 +54,13 @@ class NYTexFile
 
 class NYTexManager
 {
-	private:
+	private :
 		vector<NYTexFile*> _Textures;
 		float _ColorPaint[3];
 
 		static NYTexManager * _Instance;
+
+
 		NYTexManager()
 		{
 			_ColorPaint[0] = 1;
@@ -66,8 +68,9 @@ class NYTexManager
 			_ColorPaint[2] = 1;
 		}
 						
-	public:
 
+
+public:
 		static NYTexManager * getInstance(void)
 		{
 			if(_Instance == NULL)
@@ -81,7 +84,7 @@ class NYTexManager
 			NYTexFile * texFile = new NYTexFile();
 			texFile->File = file;
 			_Textures.push_back(texFile);
-			uint16 pos = _Textures.size() - 1;
+			uint16 pos = _Textures.size()  - 1;
 			loadTexFile(*texFile);
 			return texFile;
 		}
@@ -381,10 +384,10 @@ class NYTexManager
 
 			glBindTexture(GL_TEXTURE_2D,0);
 
-			if(!isPowerOfTwo(texFile.SizeX))
+			/*if(!isPowerOfTwo(texFile.SizeX))
 				return 3;
 			if(!isPowerOfTwo(texFile.SizeY))
-				return 4;
+				return 4;*/
 			
 			//Texture chargee
 			texFile.Loaded = true;

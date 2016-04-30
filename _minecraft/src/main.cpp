@@ -357,6 +357,9 @@ glPopMatrix();
 	GLuint camPos = glGetUniformLocation(g_program, "camPos");
 	glUniform3f(camPos, g_renderer->_Camera->_Position.X, g_renderer->_Camera->_Position.Y, g_renderer->_Camera->_Position.Z);
 
+	GLuint sunPos = glGetUniformLocation(g_program, "sunPos");
+	glUniform3f(sunPos, g_sun_dir.X, g_sun_dir.Y, g_sun_dir.Z);
+
 	glPushMatrix();
 	g_world->render_world_vbo();
 	glPopMatrix();
@@ -439,6 +442,7 @@ void setLightsBasedOnDayTime(void)
 		float color2[4] = { sunColor.R,sunColor.V,sunColor.B,1 };
 		glLightfv(GL_LIGHT0, GL_AMBIENT, color2);
 		g_sun_color = sunColor;
+
 	}
 	else
 	{

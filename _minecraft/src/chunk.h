@@ -19,12 +19,12 @@ class NYChunk
 		static float _WorldVert[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*3*4*6]; ///< Buffer pour les sommets
 		static float _WorldCols[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*4*4*6]; ///< Buffer pour les couleurs
 		static float _WorldNorm[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE*3*4*6]; ///< Buffer pour les normales
-		//static float _WorldUV[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE * 2 * 4 * 6]; ////< Buffer pour les textures coord
+		static float _WorldUV[CHUNK_SIZE*CHUNK_SIZE*CHUNK_SIZE * 2 * 4 * 6]; ////< Buffer pour les textures coord
 
 		static const int SIZE_VERTICE = 3 * sizeof(float); ///< Taille en octets d'un vertex dans le VBO
 		static const int SIZE_COLOR = 4 * sizeof(float);  ///< Taille d'une couleur dans le VBO
 		static const int SIZE_NORMAL = 3 * sizeof(float);  ///< Taille d'une normale dans le VBO
-		//static const int SIZE_COORDTEXT = 2 * sizeof(float);  ///< Taille d'une CoorText dans le VBO
+		static const int SIZE_UV = 2 * sizeof(float);  ///< Taille d'une CoorText dans le VBO
 		
 		int _NbVertices; ///< Nombre de vertices dans le VBO (on ne met que les faces visibles)
 
@@ -69,6 +69,7 @@ class NYChunk
 				float * ptVert = _WorldVert;
 				float * ptCols = _WorldCols;
 				float * ptNorm = _WorldNorm;
+				float * ptUV = _WorldUV;
 				//float * ptUV = _WorldUV;
 				_NbVertices = 0;
 
@@ -116,11 +117,14 @@ class NYChunk
 								float yPos = y*(float)NYCube::CUBE_SIZE;
 								float zPos = z*(float)NYCube::CUBE_SIZE;
 
-								//Premier QUAD
+								//Premier QUAD//----------------------------------------------------------------
 								*ptVert = xPos; ptVert++;
 								*ptVert = yPos; ptVert++;
 								*ptVert = zPos; ptVert++; _NbVertices++;
 
+								*ptUV = 0.0f; ptUV++;
+								*ptUV = 0.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -130,10 +134,13 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = -1; ptNorm++;
 
+								//----------------------------------------------------------------
 								*ptVert = xPos; ptVert++;
 								*ptVert = yPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = zPos; ptVert++; _NbVertices++;
 
+								*ptUV = 0.0f; ptUV++;
+								*ptUV = 1.0f; ptUV++;
 
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
@@ -144,10 +151,14 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = -1; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = yPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = zPos; ptVert++; _NbVertices++;
 
+								*ptUV = 1.0f; ptUV++;
+								*ptUV = 1.0f; ptUV++;
 
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
@@ -158,10 +169,14 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = -1; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = yPos; ptVert++;
 								*ptVert = zPos; ptVert++; _NbVertices++;
 
+								*ptUV = 1.0f; ptUV++;
+								*ptUV = 0.0f; ptUV++;
 	
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
@@ -172,11 +187,14 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = -1; ptNorm++;
 
-								//Second QUAD (droite)
+								//Second QUAD (droite)//----------------------------------------------------------------
 								*ptVert = xPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = yPos; ptVert++;
 								*ptVert = zPos; ptVert++; _NbVertices++;
 
+								*ptUV = 0.0f; ptUV++;
+								*ptUV = 0.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -186,10 +204,15 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = yPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = zPos; ptVert++; _NbVertices++;
 
+								*ptUV = 1.0f; ptUV++;
+								*ptUV = 0.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -199,10 +222,15 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = yPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = zPos + NYCube::CUBE_SIZE; ptVert++; _NbVertices++;
 
+								*ptUV = 1.0f; ptUV++;
+								*ptUV = 1.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -212,10 +240,15 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = yPos; ptVert++;
 								*ptVert = zPos + NYCube::CUBE_SIZE; ptVert++; _NbVertices++;
 
+								*ptUV = 0.0f; ptUV++;
+								*ptUV = 1.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -225,10 +258,13 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
-								//Troisieme QUAD (gauche)
+								//Troisieme QUAD (gauche//----------------------------------------------------------------
 								*ptVert = xPos; ptVert++;
 								*ptVert = yPos; ptVert++;
 								*ptVert = zPos; ptVert++; _NbVertices++;
+
+								*ptUV = 0.0f; ptUV++;
+								*ptUV = 0.0f; ptUV++;
 
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
@@ -239,10 +275,15 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos; ptVert++;
 								*ptVert = yPos; ptVert++;
 								*ptVert = zPos + NYCube::CUBE_SIZE; ptVert++; _NbVertices++;
 
+								*ptUV = 0.0f; ptUV++;
+								*ptUV = 1.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -252,10 +293,15 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos; ptVert++;
 								*ptVert = yPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = zPos + NYCube::CUBE_SIZE; ptVert++; _NbVertices++;
 
+								*ptUV = 1.0f; ptUV++;
+								*ptUV = 1.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -265,10 +311,15 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos; ptVert++;
 								*ptVert = yPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = zPos; ptVert++; _NbVertices++;
 
+								*ptUV = 1.0f; ptUV++;
+								*ptUV = 0.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -278,11 +329,14 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
-								//Quatrieme QUAD (Top)
+								//Quatrieme QUAD (Top)//----------------------------------------------------------------
 								*ptVert = xPos; ptVert++;
 								*ptVert = yPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = zPos; ptVert++; _NbVertices++;
 
+								*ptUV = 0.0f; ptUV++;
+								*ptUV = 0.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -292,10 +346,15 @@ class NYChunk
 								*ptNorm = 1; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos; ptVert++;
 								*ptVert = yPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = zPos + NYCube::CUBE_SIZE; ptVert++; _NbVertices++;
 
+								*ptUV = 0.0f; ptUV++;
+								*ptUV = 1.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -305,10 +364,15 @@ class NYChunk
 								*ptNorm = 1; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = yPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = zPos + NYCube::CUBE_SIZE; ptVert++; _NbVertices++;
 
+								*ptUV = 1.0f; ptUV++;
+								*ptUV = 1.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -318,10 +382,15 @@ class NYChunk
 								*ptNorm = 1; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = yPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = zPos; ptVert++; _NbVertices++;
 
+								*ptUV = 1.0f; ptUV++;
+								*ptUV = 0.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -331,11 +400,14 @@ class NYChunk
 								*ptNorm = 1; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
-								//Cinquieme QUAD (Bottom)
+								//Cinquieme QUAD (Bottom)//----------------------------------------------------------------
 								*ptVert = xPos; ptVert++;
 								*ptVert = yPos; ptVert++;
 								*ptVert = zPos; ptVert++; _NbVertices++;
 
+								*ptUV = 0.0f; ptUV++;
+								*ptUV = 0.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -345,10 +417,15 @@ class NYChunk
 								*ptNorm = -1; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = yPos; ptVert++;
 								*ptVert = zPos; ptVert++; _NbVertices++;
 
+								*ptUV = 1.0f; ptUV++;
+								*ptUV = 0.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -358,22 +435,14 @@ class NYChunk
 								*ptNorm = -1; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = yPos; ptVert++;
 								*ptVert = zPos + NYCube::CUBE_SIZE; ptVert++; _NbVertices++;
 
-								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
-								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
-								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
-								*ptCols = color[3];ptCols++;
-
-								*ptNorm = 0; ptNorm++;
-								*ptNorm = -1; ptNorm++;
-								*ptNorm = 0; ptNorm++;
-
-								*ptVert = xPos; ptVert++;
-								*ptVert = yPos; ptVert++;
-								*ptVert = zPos + NYCube::CUBE_SIZE; ptVert++; _NbVertices++;
+								*ptUV = 1.0f; ptUV++;
+								*ptUV = 1.0f; ptUV++;
 
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
@@ -384,10 +453,31 @@ class NYChunk
 								*ptNorm = -1; ptNorm++;
 								*ptNorm = 0; ptNorm++;
 
-								//Sixieme QUAD (Fond)
+
+								//----------------------------------------------------------------
 								*ptVert = xPos; ptVert++;
 								*ptVert = yPos; ptVert++;
 								*ptVert = zPos + NYCube::CUBE_SIZE; ptVert++; _NbVertices++;
+
+								*ptUV = 0.0f; ptUV++;
+								*ptUV = 1.0f; ptUV++;
+
+								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
+								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
+								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
+								*ptCols = color[3];ptCols++;
+
+								*ptNorm = 0; ptNorm++;
+								*ptNorm = -1; ptNorm++;
+								*ptNorm = 0; ptNorm++;
+
+								//Sixieme QUAD (Fond)//----------------------------------------------------------------
+								*ptVert = xPos; ptVert++;
+								*ptVert = yPos; ptVert++;
+								*ptVert = zPos + NYCube::CUBE_SIZE; ptVert++; _NbVertices++;
+
+								*ptUV = 0.0f; ptUV++;
+								*ptUV = 0.0f; ptUV++;
 
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
@@ -398,9 +488,14 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = 1; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = yPos; ptVert++;
 								*ptVert = zPos + NYCube::CUBE_SIZE; ptVert++; _NbVertices++;
+
+								*ptUV = 1.0f; ptUV++;
+								*ptUV = 0.0f; ptUV++;
 
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
@@ -411,10 +506,15 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = 1; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = yPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = zPos + NYCube::CUBE_SIZE; ptVert++; _NbVertices++;
 
+								*ptUV = 1.0f; ptUV++;
+								*ptUV = 1.0f; ptUV++;
+
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[2] + (rand() % 100) / 2000.0f; ptCols++;
@@ -424,9 +524,14 @@ class NYChunk
 								*ptNorm = 0; ptNorm++;
 								*ptNorm = 1; ptNorm++;
 
+
+								//----------------------------------------------------------------
 								*ptVert = xPos; ptVert++;
 								*ptVert = yPos + NYCube::CUBE_SIZE; ptVert++;
 								*ptVert = zPos + NYCube::CUBE_SIZE; ptVert++; _NbVertices++;
+
+								*ptUV = 0.0f; ptUV++;
+								*ptUV = 1.0f; ptUV++;
 
 								*ptCols = color[0] + (rand() % 100) / 2000.0f; ptCols++;
 								*ptCols = color[1] + (rand() % 100) / 2000.0f; ptCols++;
@@ -452,7 +557,8 @@ class NYChunk
 				glBufferData(GL_ARRAY_BUFFER,
 					_NbVertices * SIZE_VERTICE +
 					_NbVertices * SIZE_COLOR +
-					_NbVertices * SIZE_NORMAL,
+					_NbVertices * SIZE_NORMAL +
+					_NbVertices * SIZE_UV,
 					NULL,
 					GL_STREAM_DRAW);
 
@@ -478,6 +584,13 @@ class NYChunk
 					_NbVertices * SIZE_NORMAL,
 					_WorldNorm);
 
+				glBufferSubData(GL_ARRAY_BUFFER,
+					_NbVertices * SIZE_VERTICE +
+					_NbVertices * SIZE_COLOR +
+					_NbVertices * SIZE_NORMAL,
+					_NbVertices * SIZE_UV,
+					_WorldUV);
+
 				error = glGetError();
 
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -497,18 +610,16 @@ class NYChunk
 			glEnableClientState(GL_VERTEX_ARRAY);
 			glEnableClientState(GL_COLOR_ARRAY);
 			glEnableClientState(GL_NORMAL_ARRAY);
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 			//On place les pointeurs sur les datas, aux bons offsets
 			glVertexPointer(3, GL_FLOAT, 0, (void*)(0));
 			glColorPointer(4, GL_FLOAT, 0, (void*)(_NbVertices*SIZE_VERTICE));
 			glNormalPointer(GL_FLOAT, 0, (void*)(_NbVertices*SIZE_VERTICE + _NbVertices*SIZE_COLOR));
+			glTexCoordPointer(2, GL_FLOAT, 0, (void*)(_NbVertices*SIZE_VERTICE + _NbVertices*SIZE_COLOR + _NbVertices*SIZE_NORMAL));
 
 			//On demande le dessin
 			glDrawArrays(GL_QUADS, 0, _NbVertices);
-
-			glDisableClientState(GL_COLOR_ARRAY);
-			glDisableClientState(GL_VERTEX_ARRAY);
-			glDisableClientState(GL_NORMAL_ARRAY);
 
 			glDisable(GL_COLOR_MATERIAL);
 			glDisable(GL_LIGHTING);
